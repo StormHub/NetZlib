@@ -91,7 +91,7 @@ namespace NetZlib
         int need_bytes = -1;
         readonly byte[] crcbuf = new byte[4];
 
-        GZIPHeader gheader = null;
+        GZIPHeader gheader;
 
         internal int InflateReset()
         {
@@ -176,7 +176,7 @@ namespace NetZlib
             int r;
             int b;
 
-            if (z == null || z.next_in == null)
+            if (z?.next_in == null)
             {
                 if (f == Z_FINISH && this.mode == HEAD)
                     return Z_OK;
@@ -325,7 +325,7 @@ namespace NetZlib
                 {
                     if (z.avail_in == 0)
                         return r;
-                    r = f;
+                    // r = f;
 
                     z.avail_in--;
                     z.total_in++;
@@ -723,7 +723,7 @@ namespace NetZlib
             return Z_OK;
         }
 
-        static byte[] mark = { (byte)0, (byte)0, (byte)0xff, (byte)0xff };
+        static readonly byte[] mark = { 0, 0, 0xff, 0xff };
 
         internal int InflateSync()
         {
@@ -828,12 +828,12 @@ namespace NetZlib
 
         class Return : Exception
         {
-            internal int r;
+            internal readonly int r;
 
             internal Return(int r) { this.r = r; }
         }
 
-        MemoryStream tmp_string = null;
+        MemoryStream tmp_string;
 
         int ReadString(int r, int f)
         {
@@ -841,14 +841,14 @@ namespace NetZlib
             {
                 tmp_string = new MemoryStream();
             }
-            int b = 0;
+            int b;
             do
             {
                 if (z.avail_in == 0)
                 {
                     throw new Return(r);
                 }
-                ;
+                
                 r = f;
                 z.avail_in--;
                 z.total_in++;
@@ -868,18 +868,18 @@ namespace NetZlib
             {
                 tmp_string = new MemoryStream();
             }
-            int b = 0;
+            // int b = 0;
             while (this.need > 0)
             {
                 if (z.avail_in == 0)
                 {
                     throw new Return(r);
                 }
-                ;
+                
                 r = f;
                 z.avail_in--;
                 z.total_in++;
-                b = z.next_in[z.next_in_index];
+                // b = z.next_in[z.next_in_index];
                 tmp_string.Write(z.next_in, z.next_in_index, 1);
                 z.adler.Update(z.next_in, z.next_in_index, 1);
                 z.next_in_index++;

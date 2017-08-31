@@ -58,7 +58,7 @@ namespace NetZlib
         public static readonly byte Z_ASCII = 1;
         public static readonly byte Z_UNKNOWN = 2;
 
-        public static long Adler32_combine(long adler1, long adler2, long len2) =>
+        internal static long Adler32Combine(long adler1, long adler2, long len2) =>
             Adler32.Combine(adler1, adler2, len2);
     }
 }

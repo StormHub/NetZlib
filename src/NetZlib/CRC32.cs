@@ -10,7 +10,6 @@ namespace NetZlib
     // https://github.com/ymnk/jzlib/blob/master/src/main/java/com/jcraft/jzlib/CRC32.java
     sealed class CRC32 : IChecksum
     {
-        
         //  The following logic has come from RFC1952.
         int v;
         static readonly int[] crc_table;

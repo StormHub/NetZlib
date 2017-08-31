@@ -127,7 +127,7 @@ namespace NetZlib
 
             // copy input/output information to locals (UPDATE macro restores)
             { p = z.next_in_index; n = z.avail_in; b = bitb; k = bitk; }
-            { q = write; m = (int)(q < read ? read - q - 1 : end - q); }
+            { q = write; m = q < this.read ? this.read - q - 1 : this.end - q; }
 
             // process input based on current state
             while (true)
@@ -147,12 +147,12 @@ namespace NetZlib
                             z.total_in += p - z.next_in_index; z.next_in_index = p;
                             write = q;
                             return Inflate_flush(r);
-                        };
+                        }
                         n--;
                         b |= (z.next_in[p++] & 0xff) << k;
                         k += 8;
                     }
-                    t = (int)(b & 7);
+                    t = b & 7;
                     last = t & 1;
 
                     switch (t.RightUShift(1))
@@ -205,7 +205,7 @@ namespace NetZlib
                             z.total_in += p - z.next_in_index; z.next_in_index = p;
                             write = q;
                             return Inflate_flush(r);
-                        };
+                        }
                         n--;
                         b |= (z.next_in[p++] & 0xff) << k;
                         k += 8;
@@ -241,16 +241,16 @@ namespace NetZlib
                     {
                         if (q == end && read != 0)
                         {
-                            q = 0; m = (int)(q < read ? read - q - 1 : end - q);
+                            q = 0; m = q < this.read ? this.read - q - 1 : this.end - q;
                         }
                         if (m == 0)
                         {
                             write = q;
                             r = Inflate_flush(r);
-                            q = write; m = (int)(q < read ? read - q - 1 : end - q);
+                            q = write; m = q < this.read ? this.read - q - 1 : this.end - q;
                             if (q == end && read != 0)
                             {
-                                q = 0; m = (int)(q < read ? read - q - 1 : end - q);
+                                q = 0; m = q < this.read ? this.read - q - 1 : this.end - q;
                             }
                             if (m == 0)
                             {
@@ -289,7 +289,7 @@ namespace NetZlib
                             z.total_in += p - z.next_in_index; z.next_in_index = p;
                             write = q;
                             return Inflate_flush(r);
-                        };
+                        }
                         n--;
                         b |= (z.next_in[p++] & 0xff) << k;
                         k += 8;
@@ -339,7 +339,7 @@ namespace NetZlib
                                 z.total_in += p - z.next_in_index; z.next_in_index = p;
                                 write = q;
                                 return Inflate_flush(r);
-                            };
+                            }
                             n--;
                             b |= (z.next_in[p++] & 0xff) << k;
                             k += 8;
@@ -403,7 +403,7 @@ namespace NetZlib
                                 z.total_in += p - z.next_in_index; z.next_in_index = p;
                                 write = q;
                                 return Inflate_flush(r);
-                            };
+                            }
                             n--;
                             b |= (z.next_in[p++] & 0xff) << k;
                             k += 8;
@@ -440,7 +440,7 @@ namespace NetZlib
                                     z.total_in += p - z.next_in_index; z.next_in_index = p;
                                     write = q;
                                     return Inflate_flush(r);
-                                };
+                                }
                                 n--;
                                 b |= (z.next_in[p++] & 0xff) << k;
                                 k += 8;
@@ -519,7 +519,7 @@ namespace NetZlib
                     codes.Free(z);
 
                     p = z.next_in_index; n = z.avail_in; b = bitb; k = bitk;
-                    q = write; m = (int)(q < read ? read - q - 1 : end - q);
+                    q = write; m = q < this.read ? this.read - q - 1 : this.end - q;
 
                     if (last == 0)
                     {
@@ -532,7 +532,7 @@ namespace NetZlib
                 {
                     write = q;
                     r = Inflate_flush(r);
-                    q = write; m = (int)(q < read ? read - q - 1 : end - q);
+                    q = write; // m = (int)(q < read ? read - q - 1 : end - q);
                     if (read != write)
                     {
                         bitb = b; bitk = k;
@@ -602,7 +602,7 @@ namespace NetZlib
             q = read;
 
             // compute number of bytes to copy as far as end of window
-            n = (int)((q <= write ? write : end) - q);
+            n = (q <= this.write ? this.write : this.end) - q;
             if (n > z.avail_out) n = z.avail_out;
             if (n != 0 && r == Z_BUF_ERROR) r = Z_OK;
 

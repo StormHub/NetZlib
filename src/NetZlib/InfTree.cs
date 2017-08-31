@@ -204,12 +204,12 @@ namespace NetZlib
         // If BMAX needs to be larger than 16, then h and x[] should be uLong.
         const int BMAX = 15; // maximum bit length of any code
 
-        int[] hn = null; // hufts used in space
-        int[] v = null; // work area for huft_build 
-        int[] c = null; // bit length count table
-        int[] r = null; // table entry for structure assignment
-        int[] u = null; // table stack
-        int[] x = null; // bit offsets, then code stack
+        int[] hn; // hufts used in space
+        int[] v; // work area for huft_build 
+        int[] c; // bit length count table
+        int[] r; // table entry for structure assignment
+        int[] u; // table stack
+        int[] x; // bit offsets, then code stack
 
         int Huft_build(
             int[] b, // code lengths in bits (all assumed <= BMAX)

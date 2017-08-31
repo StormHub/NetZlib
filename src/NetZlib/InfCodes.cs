@@ -89,12 +89,12 @@ namespace NetZlib
         internal int Proc(int r)
         {
             int j;              // temporary storage
-            //int[] t;            // temporary pointer
+            //int[] t;          // temporary pointer
             int tindex;         // temporary pointer
             int e;              // extra bits or operation
-            int b = 0;          // bit buffer
-            int k = 0;          // bits in bit buffer
-            int p = 0;          // input data pointer
+            int b;              // bit buffer
+            int k;              // bits in bit buffer
+            int p;              // input data pointer
             int n;              // bytes available there
             int q;              // output window write pointer
             int m;              // bytes to end of window or read pointer
@@ -373,7 +373,7 @@ namespace NetZlib
                     }
 
                     s.write = q; r = s.Inflate_flush(r);
-                    q = s.write; m = q < s.read ? s.read - q - 1 : s.end - q;
+                    q = s.write; // m = q < s.read ? s.read - q - 1 : s.end - q;
 
                     if (s.read != s.write)
                     {
@@ -488,7 +488,7 @@ namespace NetZlib
                     if ((e & 16) != 0)
                     {
                         e &= 15;
-                        c = tp[tp_index_t_3 + 2] + ((int)b & inflate_mask[e]);
+                        c = tp[tp_index_t_3 + 2] + (b & inflate_mask[e]);
 
                         b >>= e; k -= e;
 
@@ -561,7 +561,7 @@ namespace NetZlib
                                         else
                                         {
                                             Array.Copy(s.window, r, s.window, q, e);
-                                            q += e; r += e; e = 0;
+                                            q += e; // r += e; e = 0;
                                         }
                                         r = 0;                  // copy rest from start of window
                                     }
@@ -577,7 +577,7 @@ namespace NetZlib
                                 else
                                 {
                                     Array.Copy(s.window, r, s.window, q, c);
-                                    q += c; r += c; c = 0;
+                                    q += c; // r += c; c = 0;
                                 }
                                 break;
                             }

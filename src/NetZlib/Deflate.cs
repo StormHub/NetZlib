@@ -148,10 +148,10 @@ namespace NetZlib
 
         const int END_BLOCK = 256;
 
-        ZStream strm;        // pointer back to this zlib stream
-        int status;           // as the name implies
+        ZStream strm;                  // pointer back to this zlib stream
+        int status;                    // as the name implies
         internal byte[] pending_buf;   // output still pending
-        int pending_buf_size; // size of pending_buf
+        int pending_buf_size;          // size of pending_buf
         internal int pending_out;      // next pending byte to output to the stream
         internal int pending;          // nb of bytes in the pending buffer
         internal int wrap = 1;
@@ -600,7 +600,7 @@ namespace NetZlib
         void Send_bits(int value, int length)
         {
             int len = length;
-            if (bi_valid > (int)Buf_size - len)
+            if (bi_valid > Buf_size - len)
             {
                 int val = value;
                 //      bi_buf |= (val << bi_valid);
@@ -866,8 +866,8 @@ namespace NetZlib
                 if (strstart == 0 || strstart >= max_start)
                 {
                     // strstart == 0 is possible when wraparound on 16-bit machine
-                    lookahead = (int)(strstart - max_start);
-                    strstart = (int)max_start;
+                    lookahead = this.strstart - max_start;
+                    strstart = max_start;
 
                     Flush_block_only(false);
                     if (strm.avail_out == 0) return NeedMore;
@@ -1405,7 +1405,7 @@ namespace NetZlib
                     window[++scan] == window[++match] &&
                     scan < strend);
 
-                len = MAX_MATCH - (int)(strend - scan);
+                len = MAX_MATCH - (strend - scan);
                 scan = strend - MAX_MATCH;
 
                 if (len > best_len)
